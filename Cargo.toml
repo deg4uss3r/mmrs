@@ -3,7 +3,7 @@ name = "mmrs"
 version = "0.1.0"
 authors = ["Ricky (Degausser) <Ricky@Hosfelt.io>"]
 edition = "2018"
-keywords = ["mattermost", bot", "http", "POST"]
+keywords = ["mattermost", "bot", "http", "POST"]
 exclude = ["target", "Cargo.lock"]
 
 [dependencies]
