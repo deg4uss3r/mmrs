@@ -71,10 +71,10 @@ impl MMBody {
 /// Main function of the library which asynchronously sends the request and returns the status code
 /// response. Will error out on a reqwest::Error if the send results in a failure 
 #[tokio::main]
-pub async fn send_message(uri: &str, body: &str) -> Result<reqwest::StatusCode, MMRSError> {
+pub async fn send_message(uri: &str, body: String) -> Result<reqwest::StatusCode, MMRSError> {
     let status_code: reqwest::StatusCode = reqwest::Client::new()
         .post(uri)
-        .json(body)
+        .body(body)
         .send()
         .await
         .map_err(MMRSError::HTTPRequestError)?
