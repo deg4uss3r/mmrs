@@ -23,7 +23,20 @@ fn main() {
 
     let body = message.to_json().unwrap();
 
-    mmrs::send_message("https://localhost:9009/post", body);
+    let response = mmrs::send_message("https://localhost:9009/post", body.to_string());
+    
+    match response {
+        Ok(code) => {
+            if code == 200 {
+                println!("{}: Sucess!", code);
+            } else {
+                println!("Error bad response code: {}\n\n", code);
+            }
+        }
+        Err(e) => {
+            println!("Error: {}\n\n", e);
+        }
+    }
 } 
 ```
 
