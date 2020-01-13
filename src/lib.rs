@@ -126,10 +126,12 @@ mod tests {
     #[test]
     fn send_test() {
         use crate as mmrs;
-        use mockito::mock;
+        use mockito::{mock, Matcher};
 
         let _m = mock("POST", "/")
-            .match_body("\"{\\\"text\\\":\\\"Hello, world!\\\"}\"")
+            .match_body(
+                Matcher::JsonString("{\"text\":\"Hello, world!\"}".to_string())
+            )
             .create();
 
         let x: mmrs::MMBody = mmrs::MMBody {
@@ -146,7 +148,7 @@ mod tests {
         let body = x.to_json().unwrap();
 
         assert_eq!(
-            mmrs::send_message(&mockito::server_url(), &body).unwrap(),
+            mmrs::send_message(&mockito::server_url(), body.to_string()).unwrap(),
             reqwest::StatusCode::OK
         );
     }
