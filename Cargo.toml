@@ -6,7 +6,7 @@ edition = "2018"
 keywords = ["mattermost", "bot", "http", "POST"]
 exclude = ["target", "Cargo.lock"]
 description = "Small library to send POST requests to MatterMost Server"
-license = "Apache 2.0" 
+license = "Apache-2.0" 
 
 [dependencies]
 reqwest = {version = "0.10.0", features = ["json"]}
