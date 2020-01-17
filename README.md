@@ -21,9 +21,9 @@ fn main() {
         &your_name
     ));
 
-    let body = message.to_json().unwrap();
+    let body = message.to_json().expect("Error converting to json");
 
-    let response = mmrs::send_message("https://localhost:9009/post", body.to_string());
+    let response = mmrs::send_message("https://localhost:9009/post", body);
     
     match response {
         Ok(code) => {
