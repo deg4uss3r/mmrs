@@ -69,7 +69,7 @@ impl MMBody {
 }
 
 /// Main function of the library which asynchronously sends the request and returns the status code
-/// response. Will error out on a reqwest::Error if the send results in a failure 
+/// response. Will error out on a reqwest::Error if the send results in a failure
 #[tokio::main]
 pub async fn send_message(uri: &str, body: String) -> Result<reqwest::StatusCode, MMRSError> {
     let status_code: reqwest::StatusCode = reqwest::Client::new()
@@ -126,12 +126,14 @@ mod tests {
     #[test]
     fn send_test() {
         use crate as mmrs;
-        use mockito::{mock, Matcher};
+        use mockito::{Matcher, Server};
+        let mut s = Server::new();
 
-        let _m = mock("POST", "/")
-            .match_body(
-                Matcher::JsonString("{\"text\":\"Hello, world!\"}".to_string())
-            )
+        let _m = s
+            .mock("POST", "/")
+            .match_body(Matcher::JsonString(
+                "{\"text\":\"Hello, world!\"}".to_string(),
+            ))
             .create();
 
         let x: mmrs::MMBody = mmrs::MMBody {
@@ -148,7 +150,7 @@ mod tests {
         let body = x.to_json().unwrap();
 
         assert_eq!(
-            mmrs::send_message(&mockito::server_url(), body.to_string()).unwrap(),
+            mmrs::send_message(&s.url(), body.to_string()).unwrap(),
             reqwest::StatusCode::OK
         );
     }
