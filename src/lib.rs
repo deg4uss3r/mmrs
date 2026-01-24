@@ -1,7 +1,6 @@
 use std::error::Error;
 use std::fmt;
 
-use reqwest;
 use serde::{Deserialize, Serialize};
 use serde_json as json;
 
@@ -28,7 +27,7 @@ impl Error for MMRSError {}
 
 /// Custom struct to serialize the HTTP POST data into a json objecting using serde_json
 /// For a description of these fields see the [Official MatterMost Developer Documentation](https://developers.mattermost.com/integrate/incoming-webhooks/#parameters)
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Default)]
 pub struct MMBody {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
@@ -50,17 +49,9 @@ pub struct MMBody {
 
 impl MMBody {
     pub fn new() -> MMBody {
-        MMBody {
-            text: None,
-            channel: None,
-            username: None,
-            icon_url: None,
-            icon_emoji: None,
-            attachments: None,
-            r#type: None,
-            props: None,
-        }
+        MMBody::default()
     }
+
     /// This function allows us to convert from the struct to a string of JSON which a web server
     /// will accept
     pub fn to_json(self) -> Result<String, MMRSError> {
